@@ -8,10 +8,6 @@ mkdir -p $TMP_DIR 2> /dev/null
 cat << EOF > $TMP_DIR/hosts
 [webservers]
 localhost ansible_connection=local
-
-[webservers:vars]
-zsh_users[] = debian
-zsh_users[] = vagrant
 EOF
 
 mkdir -p $TMP_DIR/group_vars 2> /dev/null
