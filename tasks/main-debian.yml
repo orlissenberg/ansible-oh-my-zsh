@@ -1,0 +1,36 @@
+
+- name: install prerequisites
+  apt: name={{ item }} state=latest
+  with_items:
+    - zsh
+
+- name: copy support scripts
+  copy: src=oh_my_zsh_installed.sh dest=/tmp/oh_my_zsh_installed.sh owner=root group=root mode=0755
+
+- name: create oh-my-zsh users
+  user: name={{ item }} state=present
+  with_items: zsh_users
+
+- name: check if oh-my-zsh can be installed
+  shell: "/tmp/oh_my_zsh_installed.sh {{ item }}"
+  register: oh_my_zsh_users
+  with_items: zsh_users
+  ignore_errors: True
+
+# for science
+#- debug: var=oh_my_zsh_users
+
+- name: install oh-my-zsh
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=/home/{{ item.item }}/.oh-my-zsh
+  with_items: oh_my_zsh_users.results
+  when: item.stdout == "install-oh-my-zsh"
+
+- name: install a new zsh config if none exists
+  shell: "cp /home/{{ item.item }}/.oh-my-zsh/templates/zshrc.zsh-template /home/{{ item.item }}/.zshrc --no-clobber;
+    chown -h {{ item.item }}:{{ item.item }} /home/{{ item.item }}/.zshrc"
+  with_items: oh_my_zsh_users.results
+  when: item.stdout == "install-oh-my-zsh"
+
+- name: set zsh as the default shell
+  command: chsh -s /bin/zsh {{ item.item }}
+  with_items: oh_my_zsh_users.results

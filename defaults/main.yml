@@ -1,0 +1,5 @@
+---
+# defaults file for oh-my-zsh
+
+zsh_users:
+  - root

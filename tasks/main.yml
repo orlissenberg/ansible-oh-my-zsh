@@ -1,0 +1,13 @@
+---
+# tasks file for oh-my-zsh
+# https://github.com/robbyrussell/oh-my-zsh
+
+#- debug: var=ansible_ssh_user
+
+- authorized_key: user={{ ansible_ssh_user }} key="{{ lookup('file', 'ssh_dss_github_com.pub') }}"
+- authorized_key: user={{ ansible_ssh_user }} key="{{ lookup('file', 'ssh_rsa_github_com.pub') }}"
+
+- include: main-debian.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '8'
+
+
