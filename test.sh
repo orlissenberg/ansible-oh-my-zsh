@@ -19,7 +19,7 @@ EOF
 
 cat << EOF > $TMP_DIR/ansible.cfg
 [defaults]
-roles_path = /vagrant/ansible/roles
+roles_path = $CURRENT_DIR/../
 host_key_checking = False
 EOF
 
