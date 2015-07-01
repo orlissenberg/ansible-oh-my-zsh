@@ -5,5 +5,5 @@
   sudo: yes
 
   roles:
-    - oh-my-zsh
+    - ansible-oh-my-zsh
 
