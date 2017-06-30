@@ -25,4 +25,16 @@ EOF
 
 export ANSIBLE_CONFIG=$TMP_DIR/ansible.cfg
 
-ansible-playbook playbook.yml -i $TMP_DIR/hosts
+# Create playbook.yml
+cat << EOF > $TMP_DIR/playbook.yml
+---
+
+- hosts: webservers
+  gather_facts: yes
+  become: yes
+
+  roles:
+    - ansible-oh-my-zsh
+EOF
+
+ansible-playbook $TMP_DIR/playbook.yml -i $TMP_DIR/hosts
